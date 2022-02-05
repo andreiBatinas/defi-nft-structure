@@ -6,9 +6,10 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "base64-sol/base64.sol";
 
-contract SVGNFT is ERC721URIStorage {
+contract SVGNFT is ERC721URIStorage, Ownable {
     uint256 public tokenCounter;
 
     event CreatedSVGNFT(uint256 indexed tokenId, string tokenURI);
@@ -17,7 +18,7 @@ contract SVGNFT is ERC721URIStorage {
         tokenCounter = 0;
     }
 
-    function create(string memory svg) public {
+    function create(string memory svg) public onlyOwner {
         _safeMint(msg.sender, tokenCounter);
         string memory imageURI = svgToImageURI(svg);
         string memory tokenUri = formatTokenURI(imageURI);
@@ -27,7 +28,7 @@ contract SVGNFT is ERC721URIStorage {
     }
 
     function svgToImageURI(string memory svg)
-        public
+        private
         pure
         returns (string memory)
     {
@@ -45,7 +46,7 @@ contract SVGNFT is ERC721URIStorage {
     }
 
     function formatTokenURI(string memory imageURI)
-        public
+        private
         pure
         returns (string memory)
     {

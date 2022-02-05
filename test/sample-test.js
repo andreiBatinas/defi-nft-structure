@@ -1,19 +1,42 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+const fs = require("fs");
+
+
+
+
 
 describe("Greeter", function () {
-  it("Should return the new greeting once it's changed", async function () {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, world!");
-    await greeter.deployed();
 
-    expect(await greeter.greet()).to.equal("Hello, world!");
+  let nft
+  let owner
+  let addr1
+  let addr2
 
-    const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
+  beforeEach(async function () {
 
-    // wait until the transaction is mined
-    await setGreetingTx.wait();
+    [owner, addr1, addr2] = await ethers.getSigners();
+    const NFT = await ethers.getContractFactory("SVGNFT");
+    nft = await NFT.deploy();
+    await nft.deployed();
 
-    expect(await greeter.greet()).to.equal("Hola, mundo!");
+  });
+
+  it("Only Owner can mint NFT", async function () {
+
+    const filePath = "./img/house-u1.svg"
+    const svg = fs.readFileSync(filePath, { encoding: "utf8" })
+
+    const transactionResponse = await nft.create(svg)
+    const receit = await transactionResponse.wait(1)
+
+    const OwnerBalance = await nft.balanceOf(owner.address)
+    expect(OwnerBalance).to.be.equal(1)
+
+    await
+      await expect(
+        nft.connect(addr1).create(svg)
+      ).to.be.revertedWith("Ownable: caller is not the owner")
+
   });
 });
