@@ -1,0 +1,11 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>Layer 1</title>
+  <path id="svg_1" d="m213,294l400,0l0,178l-400,0l0,-178z" opacity="undefined" stroke="#000" fill="#fff"/>
+  <line id="svg_2" y2="126" x2="415" y1="293" x1="612" stroke="#000" fill="none"/>
+  <line id="svg_3" y2="170" x2="727" y1="170" x1="726" stroke="#000" fill="none"/>
+  <line id="svg_4" y2="123" x2="414" y1="293" x1="214" stroke="#000" fill="none"/>
+  <text xml:space="preserve" text-anchor="start" font-family="Noto Sans JP" font-size="24" stroke-width="0" id="svg_5" y="375" x="340" stroke="#000" fill="#000000">U - 1</text>
+ </g>
+</svg>
