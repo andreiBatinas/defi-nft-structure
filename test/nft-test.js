@@ -2,10 +2,6 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 const fs = require("fs");
 
-
-
-
-
 describe("Greeter", function () {
 
   let nft
