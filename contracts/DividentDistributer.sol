@@ -6,19 +6,40 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./SVGNFT.sol";
 
+import "hardhat/console.sol";
+
 contract DividentDistributer is Ownable {
     SVGNFT nftCollection;
-    IERC20 daiToken;
-    uint256 daiRewardAmount;
+    IERC20 rewardToken;
+    uint256 rewardAmount;
 
     constructor(
         address _nftCollectionAddress,
-        address _daiTokenAddress,
-        uint256 _daiRewardAmount
+        address _rewardTokenAddress,
+        uint256 _rewardAmount
     ) {
         nftCollection = SVGNFT(_nftCollectionAddress);
-        daiToken = IERC20(_daiTokenAddress);
-        daiRewardAmount = _daiRewardAmount;
+        rewardToken = IERC20(_rewardTokenAddress);
+        rewardAmount = _rewardAmount;
+    }
+
+    function setRewardAmount(uint256 _rewardAmount) public onlyOwner {
+        rewardAmount = _rewardAmount;
+    }
+
+    function getRewardAmount() public view returns (uint256) {
+        return rewardAmount;
+    }
+
+    function setRewardToken(address _rewardTokenAddress) public onlyOwner {
+        rewardToken = IERC20(_rewardTokenAddress);
+    }
+
+    function setNftCollectionAddress(address _nftCollectionAddress)
+        public
+        onlyOwner
+    {
+        nftCollection = SVGNFT(_nftCollectionAddress);
     }
 
     function payDividents() public onlyOwner {
@@ -26,16 +47,20 @@ contract DividentDistributer is Ownable {
 
         require(amountOfMintedNft > 0, "No minted NFTs");
         require(
-            daiToken.balanceOf(address(this)) >
-                amountOfMintedNft * daiRewardAmount,
+            rewardToken.balanceOf(address(this)) >
+                amountOfMintedNft * rewardAmount,
             "Not enough dai token"
         );
+
+        console.log("Amount of minted NFT: %s", amountOfMintedNft);
 
         for (uint256 index = 0; index < amountOfMintedNft; index++) {
             address nftOwner = nftCollection.ownerOf(index);
             uint256 nftAmount = nftCollection.balanceOf(nftOwner);
 
-            daiToken.transfer(nftOwner, nftAmount * daiRewardAmount);
+            console.log("Owner: %s, nftAmount: %s", nftOwner, nftAmount);
+
+            rewardToken.transfer(nftOwner, rewardAmount);
         }
     }
 }

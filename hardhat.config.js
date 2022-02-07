@@ -21,6 +21,8 @@ const RINKEBY_RPC_URL = process.env.RINKEBY_RPC_URL
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_TOKEN
 
+console.log(PRIVATE_KEY)
+
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
@@ -28,11 +30,11 @@ module.exports = {
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {},
-    rinkeby: {
-      url: RINKEBY_RPC_URL,
-      accounts: [PRIVATE_KEY],
-      saveDeployments: true
-    },
+    // rinkeby: {
+    //   url: RINKEBY_RPC_URL,
+    //   accounts: [PRIVATE_KEY],
+    //   saveDeployments: true
+    // },
     fantomtest: {
       url: "https://rpc.testnet.fantom.network",
       accounts: [PRIVATE_KEY],
@@ -46,7 +48,7 @@ module.exports = {
       default: 0
     }
   },
-  etherscan: {
-    apiKey: ETHERSCAN_API_KEY
-  }
+  // etherscan: {
+  //   apiKey: ETHERSCAN_API_KEY
+  // }
 };
